@@ -1,60 +1,88 @@
 name: Build
 
-on: [pull_request]
+on: [pull_request, push]
 
 jobs:
   Archlinux:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: setup Python 3.7
-      uses: actions/setup-python@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and push
+      uses: docker/build-push-action@v1
       with:
-        python-version: '3.7'
-    - name: install dependencies
-      run: pip install -r requirements.txt
-    - name: run build
-      run: docker build -t archlinux-kdedev -f Dockerfile-archlinux .
+        dockerfile: Dockerfile-archlinux
+        always_pull: true
+        push: true
+        cache_froms: ${{ github.repository }}/archlinux:latest
+        repository: ${{ github.repository }}/archlinux
+        tags: latest
+        tag_with_ref: true
+        tag_with_sha: true
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
 
   Fedora:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: setup Python 3.7
-      uses: actions/setup-python@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and push
+      uses: docker/build-push-action@v1
       with:
-        python-version: '3.7'
-    - name: install dependencies
-      run: pip install -r requirements.txt
-    - name: run build
-      run: docker build -t fedora-kdedev -f Dockerfile-fedora .
+        dockerfile: Dockerfile-fedora
+        always_pull: true
+        push: true
+        cache_froms: ${{ github.repository }}/fedora:latest
+        repository: ${{ github.repository }}/fedora
+        tags: latest
+        tag_with_ref: true
+        tag_with_sha: true
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
 
   OpenSUSE:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: setup Python 3.7
-      uses: actions/setup-python@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and push
+      uses: docker/build-push-action@v1
       with:
-        python-version: '3.7'
-    - name: install dependencies
-      run: pip install -r requirements.txt
-    - name: run build
-      run: docker build -t opensuse-kdedev -f Dockerfile-opensuse .
+        dockerfile: Dockerfile-opensuse
+        always_pull: true
+        push: true
+        cache_froms: ${{ github.repository }}/opensuse:latest
+        repository: ${{ github.repository }}/opensuse
+        tags: latest
+        tag_with_ref: true
+        tag_with_sha: true
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
 
   Ubuntu:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: setup Python 3.7
-      uses: actions/setup-python@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and push
+      uses: docker/build-push-action@v1
       with:
-        python-version: '3.7'
-    - name: install dependencies
-      run: pip install -r requirements.txt
-    - name: run build
-      run: docker build -t ubuntu-kdedev -f Dockerfile-ubuntu .
+        dockerfile: Dockerfile-ubuntu
+        always_pull: true
+        push: true
+        cache_froms: ${{ github.repository }}/ubuntu:latest
+        repository: ${{ github.repository }}/ubuntu
+        tags: latest
+        tag_with_ref: true
+        tag_with_sha: true
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
