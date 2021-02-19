@@ -51,7 +51,6 @@ MAINTAINER Mathieu Tarral <mathieu.tarral@gmail.com>
 # kalgebra              |       glu
 # marble                |       automoc4
 # parley                |       qt5-multimedia
-# artikulate            |       qt5-gstreamer
 # step                  |       eigen
 # khelpcenter           |       xapian-core
 #-----------------------|---------------------------------
@@ -123,7 +122,6 @@ RUN pacman --noconfirm -Sy \
                                 clang llvm \
                                 glu \
                                 qt5-multimedia \
-                                qt5-gstreamer \
                                 eigen \
                                 xapian-core
 # PIM
