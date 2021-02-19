@@ -60,25 +60,20 @@ MAINTAINER Mathieu Tarral <mathieu.tarral@gmail.com>
 # kcalcore              |       libical
 #-----------------------|---------------------------------
 
-# Update keyring
-#---------------------------
-RUN pacman --noconfirm -Sy
-RUN pacman --noconfirm -Sy archlinux-keyring
+# WORKAROUND for glibc 2.33 and old Docker
+# See https://github.com/actions/virtual-environments/issues/2658
+# Thanks to https://github.com/lxqt/lxqt-panel/pull/1562
+RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
+    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
+    bsdtar -C / -xvf "$patched_glibc"
 
-# General upgrade
+# Update keyring build-essential
 #---------------------------
-RUN pacman --noconfirm -Syu
-
-# Install dependencies
-#---------------------------
-# build-essential
-RUN pacman --noconfirm -Sy gcc git cmake make vim doxygen bzr
-
+RUN pacman --noconfirm -Sy archlinux-keyring gcc git cmake make vim doxygen bzr \
 # kdesrc-build
-RUN pacman --noconfirm -Sy perl perl-json perl-libwww perl-xml-parser dialog \
-                            perl-io-socket-ssl qt5-base perl-yaml-libyaml
+                                perl perl-json perl-libwww perl-xml-parser dialog \
+                                perl-io-socket-ssl qt5-base perl-yaml-libyaml \
 # Frameworks
-RUN pacman --noconfirm -Sy \
                                 qt5-script \
                                 qt5-quickcontrols \
                                 qt5-x11extras \
@@ -98,9 +93,8 @@ RUN pacman --noconfirm -Sy \
                                 qt5-quickcontrols2 \
                                 openssl-1.0 \
                                 intltool \
-                                qt5-wayland
+                                qt5-wayland \
 # Workspace
-RUN pacman --noconfirm -Sy \
                                 libpwquality \
                                 xf86-input-synaptics xorg-server-devel \
                                 gtkmm gtkmm3 \
@@ -114,28 +108,25 @@ RUN pacman --noconfirm -Sy \
                                 libcanberra \
                                 appstream \
                                 sassc python-cairo \
-                                pipewire
+                                pipewire \
 # Applications
-RUN pacman --noconfirm -Sy \
                                 hunspell \
                                 grantlee \
                                 clang llvm \
                                 glu \
                                 qt5-multimedia \
                                 eigen \
-                                xapian-core
+                                xapian-core \
 # PIM
-RUN pacman --noconfirm -Sy \
                                 libdmtx qrencode \
-                                libical
+                                libical \
 # Xorg & VNC
-RUN pacman --noconfirm -Sy xorg-xsetroot xorg-xprop xorg-font-util xorg-xmessage \
-                            xorg-fonts-100dpi xorg-fonts-75dpi xorg-fonts-alias-misc \
-                            xorg-server-xvfb x11vnc
-
+                                xorg-xsetroot xorg-xprop xorg-font-util xorg-xmessage \
+                                xorg-fonts-100dpi xorg-fonts-75dpi xorg-fonts-alias-misc \
+                                xorg-server-xvfb x11vnc \
 # Utilities
-RUN pacman --noconfirm -Sy nano \
-                           mc 
+                                nano \
+                                mc
 
 # setup kdedev account
 RUN useradd -d /home/kdedev -m kdedev -G video && \
